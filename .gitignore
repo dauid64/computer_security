@@ -1,0 +1,35 @@
+# Arquivos de compilação
+*.o
+*.exe
+*.out
+*.app
+
+# Arquivos do CodeBlocks
+*.layout
+*.depend
+bin/
+obj/
+
+# Arquivos de backup
+*.bak
+*.save
+
+# Arquivos específicos do sistema
+.DS_Store
+Thumbs.db
+
+# Diretórios de debug
+Debug/
+Release/
+
+# Arquivos temporários
+*.tmp
+*~
+
+# Logs
+*.log
+
+# Arquivos de configuração local IDE
+.vscode/
+.idea/
+*.workspace
