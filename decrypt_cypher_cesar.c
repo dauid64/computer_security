@@ -36,7 +36,7 @@ char find_letter_most_frequency(struct freq_letter *freq_letters, int *total_let
     return letter_most_frequency.letter;
 };
 
-char* decrypt_cypher_cesar(const char* encrypt_msg) {
+void decrypt_cypher_cesar(const char* encrypt_msg) {
     struct freq_letter freq_letter_encrypt_msg[MAX_SIZE];
     int total_letter = 0;
 
@@ -76,7 +76,7 @@ char* decrypt_cypher_cesar(const char* encrypt_msg) {
             decrypt_text[size_decrypt_text] = decrypt_letter;
             size_decrypt_text++;
         }
-        printf("Chave %i: %s\n", i, decrypt_text);
+        printf("Chave %i: %s\n", possible_keys[i], decrypt_text);
     }
 };
 
