@@ -28,9 +28,24 @@ void encrypt_cypher_transposition(char *msg) {
     char sort_secret_key[] = SECRET_KEY;
     sort_alphabetically(sort_secret_key);
 
+    int numeric_secret_key[tam_secret_key];
+
     for (int i = 0; i < tam_secret_key; i++) {
-        encrypt_msg[0][i] = sort_secret_key[i];
-        printf("%c", encrypt_msg[0][i]);
+        numeric_secret_key[i] = i + 1;
+    }
+
+    int count_aux = 0;
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < tam_secret_key; col++) {
+            if (msg[count_aux] == '\0') {
+                encrypt_msg[row][col] = 'X';
+            } else {
+                encrypt_msg[row][col] = msg[count_aux];
+            }
+            count_aux++;
+            printf("%c", encrypt_msg[row][col]);
+        }
+        printf("\n");
     }
 }
 
