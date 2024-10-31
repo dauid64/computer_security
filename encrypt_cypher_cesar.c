@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#define MAX_SIZE 100
 
 char* encrypt_cypher_cesar(const char* msg) {
     char* encrypt_msg = malloc(strlen(msg) + 1);
@@ -28,10 +29,10 @@ void to_upper(char *str) {
 };
 
 int main() {
-    char msg[100];
+    char msg[MAX_SIZE];
 
     printf("Digite a mensagem a ser criptografada pela Cifra Cesar (max 99 caracteres): ");
-    fgets(msg, sizeof(msg), stdin);
+    fgets(msg, MAX_SIZE, stdin);
 
     msg[strcspn(msg, "\n")] = '\0';
     to_upper(msg);
