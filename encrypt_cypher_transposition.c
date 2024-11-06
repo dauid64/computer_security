@@ -4,15 +4,14 @@
 #define MAX_SIZE 100
 #define SECRET_KEY "MEGABUCK"
 
-void sort_alphabetically(char *msg) {
-    int tam_msg = strlen(msg) - 1;
-
-    for (int i = 0; i < tam_msg; i++) {
-        for (int j = i; j < tam_msg; j++) {
-            if (msg[i] > msg[j + 1]) {
-                char aux = msg[i];
-                msg[i] = msg[j + 1];
-                msg[j + 1] = aux;
+void sort(char *message) {
+    int tam_message = strlen(message);
+    for (int i = 0; i < tam_message - 1; i++) {
+        for (int j = i+1; j < tam_message; j++) {
+            if (message[i] > message[j]) {
+                int aux = message[i];
+                message[i] = message[j];
+                message[j] = aux;
             }
         }
     }
@@ -22,15 +21,64 @@ void encrypt_cypher_transposition(char *msg) {
     int tam_msg = strlen(msg);
     int tam_secret_key = strlen(SECRET_KEY);
     int rows = (tam_msg + tam_secret_key - 1) / tam_secret_key;
-
-    char encrypt_msg[rows - 1][tam_secret_key - 1];
+    char matriz_msg[rows][tam_secret_key];
 
     char sort_secret_key[] = SECRET_KEY;
-    sort_alphabetically(sort_secret_key);
+    sort(sort_secret_key);
 
+    int *numeric_secret_key = calloc(tam_secret_key - 1, sizeof(int));
+
+    // Pega uma lista de valores de acordo com a ordem mais baixa no alfabeto
     for (int i = 0; i < tam_secret_key; i++) {
-        encrypt_msg[0][i] = sort_secret_key[i];
-        printf("%c", encrypt_msg[0][i]);
+        for (int j = 0; j < tam_secret_key; j++) {
+            if (sort_secret_key[i] == SECRET_KEY[j]) {
+                if (numeric_secret_key[j] == 0) {
+                    numeric_secret_key[j] = i + 1;
+                    break;
+                }
+            }
+        }
+    }
+
+    // cria uma matriz com a mensagem a ser criptografada
+    int count_aux = 0;
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < tam_secret_key; col++) {
+            if (count_aux > tam_msg - 1) {
+                matriz_msg[row][col] = 'X';
+            } else {
+                matriz_msg[row][col] = msg[count_aux];
+            }
+            count_aux++;
+        }
+    }
+
+    // pega em ordem as colunas, usando como referência o vetor de ordem alfabetica
+    // Onde começa pelo valor 1 por exemplo que pode estar localizado na col
+    // Ex: numeric_secret_key=[7, 4, 5, 1, 2, 8, 3, 6]
+    //             matriz_msg=[t, r, a, n, s, f, e, r]
+    // começa pegando a coluna com valor 1 e assim por diante, então ficaria: nserart
+    char encrypt_msg[tam_msg - 1];
+    int count_get_col = 1;
+    int count_add_caracter = 0;
+
+    while (count_add_caracter < tam_msg) {
+        for (int i = 0; i < tam_secret_key; i++) {
+            if (numeric_secret_key[i] == count_get_col) {
+                for (int row = 0; row < rows; row++) {
+                    if(matriz_msg[row][i] != 'X') {
+                        encrypt_msg[count_add_caracter] = matriz_msg[row][i];
+                        count_add_caracter++;
+                    }
+                }
+                count_get_col++;
+            }
+        }
+    }
+
+    printf("\nEncrypt Message = ");
+    for (int i = 0; i < tam_msg; i++) {
+        printf("%c", encrypt_msg[i]);
     }
 }
 
