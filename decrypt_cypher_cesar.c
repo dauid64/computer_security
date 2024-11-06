@@ -50,6 +50,7 @@ void decrypt_cypher_cesar(const char* encrypt_msg) {
     }
 
     char letter_most_frequency = find_letter_most_frequency(freq_letter_encrypt_msg, total_letter);
+    printf("Letra mais frequente: %c\n", letter_most_frequency);
     // Endregion
 
     // Baseado na distribuição de frequência peguei as duas letras mais frequentes da lingua portguesa
@@ -58,7 +59,7 @@ void decrypt_cypher_cesar(const char* encrypt_msg) {
 
     // Encontra as possíveis chaves se baseando nas letras mais frequentes na lingua portuguesa e na palavra criptografada
     for (int i = 0; i < 2; i++) {
-        int key = (letter_most_frequency - letter_common[i]) % 26;
+        int key = abs(letter_most_frequency - letter_common[i]) % 26;
         possible_keys[i] = key;
     }
 
@@ -71,7 +72,7 @@ void decrypt_cypher_cesar(const char* encrypt_msg) {
             if (encrypt_msg[j] == ' ') {
                 decrypt_letter = ' ';
             } else {
-                decrypt_letter = ((encrypt_msg[j] - 'A' - possible_keys[i]) % 26) + 'A';
+                decrypt_letter = (abs(encrypt_msg[j] - 'A' - possible_keys[i]) % 26) + 'A';
             }
             decrypt_text[size_decrypt_text] = decrypt_letter;
             size_decrypt_text++;
